@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\smith\\OneDrive\\Dev\\54one\\541Tonics\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{10C91BF3-3077-428D-AC19-D402A50578FD}|541Tonics.vcxproj|C:\\Users\\smith\\OneDrive\\Dev\\54one\\541Tonics\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{10C91BF3-3077-428D-AC19-D402A50578FD}|541Tonics.vcxproj|solutionrelative:main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e506b91c-c606-466a-90a9-123d1d1e12b3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "main.cpp",
+              "DocumentMoniker": "C:\\Users\\smith\\OneDrive\\Dev\\54one\\541Tonics\\main.cpp",
+              "RelativeDocumentMoniker": "main.cpp",
+              "ToolTip": "C:\\Users\\smith\\OneDrive\\Dev\\54one\\541Tonics\\main.cpp",
+              "RelativeToolTip": "main.cpp",
+              "ViewState": "AQIAAIUBAAAAAAAAAAAAAKcBAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-02-26T12:47:10.51Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
