@@ -59,11 +59,10 @@ struct ModernUnitCost {
 	double avocado;
 	double castor;
 	double jojoba;
-	double patchouli;
-	double teatree;
+	double lemongrass;
 	double eucalyptus;
-	double bergamot;
-	double cedarwood;
+	double peppermint;
+	double frankincense;
 	double sandalwood;
 	double bottle;
 	double label;
@@ -87,42 +86,44 @@ struct ClassicUnitCost {
 	double box;
 };
 
-struct ModernTotalCost {
-	double avocado;
-	double castor;
-	double jojoba;
-	double patchouli;
-	double teatree;
-	double eucalyptus;
-	double bergamot;
-	double cedarwood;
-	double sandalwood;
-	double bottle;
-	double label;
-	double printing;
-	double box;
-};
-
-struct ClassicTotalCost {
-	double avocado;
-	double castor;
-	double jojoba;
-	double patchouli;
-	double teatree;
-	double eucalyptus;
-	double bergamot;
-	double cedarwood;
-	double sandalwood;
-	double bottle;
-	double label;
-	double printing;
-	double box;
-};
+//struct ModernTotalCost {
+//	double avocado;
+//	double castor;
+//	double jojoba;
+//	double lemongrass;
+//	double eucalyptus;
+//	double peppermint;
+//	double frankincense;
+//	double sandalwood;
+//	double bottle;
+//	double label;
+//	double printing;
+//	double box;
+//};
+//
+//struct ClassicTotalCost {
+//	double avocado;
+//	double castor;
+//	double jojoba;
+//	double patchouli;
+//	double teatree;
+//	double eucalyptus;
+//	double bergamot;
+//	double cedarwood;
+//	double sandalwood;
+//	double bottle;
+//	double label;
+//	double printing;
+//	double box;
+//};
 
 struct IngredientsCost {
 	double avocado;
 	double castor;
 	double jojoba;
+	double lemongrass;
+	double peppermint;
+	double frankincense;
 	double patchouli;
 	double teatree;
 	double eucalyptus;
@@ -142,23 +143,21 @@ void mainMenu(vector<ModernRecipe>&,
 	vector<ClassicRecipe>&,
 	vector<ModernUnitCost>&,
 	vector<ClassicUnitCost>&,
-	vector<ModernTotalCost>&,
-	vector<ClassicTotalCost>&,
 	vector<IngredientsCost>&);
 void calculateRecipe(vector<ModernRecipe>&, vector<ClassicRecipe>&);
 void calculateCosts(vector<ModernRecipe>&,
 	vector<ClassicRecipe>&,
 	vector<ModernUnitCost>&,
 	vector<ClassicUnitCost>&,
-	vector<ModernTotalCost>&,
-	vector<ClassicTotalCost>&,
 	vector<IngredientsCost>&);
+double pricePerMilliliter();
+double pricePerUnit();
 
 
 // constants for ratios
 const double RETAIL_BOTTLE_PRICE = 20.00;
 const double WHOLESALE_BOTTLE_PRICE = 12.50;
-const int MILLILITERS_PER_OUNCE = 30;
+const double MILLILITERS_PER_OUNCE = 29.5735;
 const double MILLILITERS_PER_DROP = 0.05;
 // in milliliters
 const double AVOCADO_PER_BOTTLE = 4.8;
@@ -186,16 +185,12 @@ int main()
 	vector<ClassicRecipe> classicRecipe;
 	vector<ModernUnitCost> modernUnitCost;
 	vector<ClassicUnitCost> classicUnitCost;
-	vector<ModernTotalCost> modernTotalCost;
-	vector<ClassicTotalCost> classicTotalCost;
+	// vector<ModernTotalCost> modernTotalCost;
+	// vector<ClassicTotalCost> classicTotalCost;
 	vector<IngredientsCost> ingredientsCost;
 	
-	// declare price variables
-	
 	// call main menu
-	mainMenu(modernRecipe, classicRecipe, modernUnitCost, classicUnitCost, modernTotalCost, classicTotalCost, ingredientsCost);
-
-	cout << "program is working";
+	mainMenu(modernRecipe, classicRecipe, modernUnitCost, classicUnitCost, ingredientsCost);
 
 	return 0;
 }
@@ -214,7 +209,7 @@ void displayMenu()
 } // displayMenu
 
 // main menu function
-void mainMenu(vector<ModernRecipe>& modernRecipe, vector<ClassicRecipe>& classicRecipe, vector<ModernUnitCost>& modernUnitCost, vector<ClassicUnitCost>& classicUnitCost, vector<ModernTotalCost>& modernTotalCost, vector<ClassicTotalCost>& classicTotalCost, vector<IngredientsCost>& ingredientsCost)
+void mainMenu(vector<ModernRecipe>& modernRecipe, vector<ClassicRecipe>& classicRecipe, vector<ModernUnitCost>& modernUnitCost, vector<ClassicUnitCost>& classicUnitCost, vector<IngredientsCost>& ingredientsCost)
 {
 	// declare variables
 	char selection = ' ';
@@ -245,7 +240,7 @@ void mainMenu(vector<ModernRecipe>& modernRecipe, vector<ClassicRecipe>& classic
 			calculateRecipe(modernRecipe, classicRecipe);
 			break;
 		case '2':
-			calculateCosts(modernRecipe, classicRecipe, modernUnitCost, classicUnitCost, modernTotalCost, classicTotalCost, ingredientsCost);
+			calculateCosts(modernRecipe, classicRecipe, modernUnitCost, classicUnitCost, ingredientsCost);
 			break;
 		case 'X':
 			processMenuSelection = false;
@@ -361,7 +356,7 @@ void calculateRecipe(vector<ModernRecipe>& modernRecipe, vector<ClassicRecipe>& 
 			break;
 		case 'X':
 			processMenuSelection = false;
-			cout << "Going back.";
+			cout << "Going back." << endl;
 			break;
 		default:
 			cout << "Please make a valid selection." << endl;
@@ -370,16 +365,24 @@ void calculateRecipe(vector<ModernRecipe>& modernRecipe, vector<ClassicRecipe>& 
 } // calculateRecipe
 
 // costs function
-void calculateCosts(vector<ModernRecipe>&, vector<ClassicRecipe>&, vector<ModernUnitCost>&, vector<ClassicUnitCost>&, vector<ModernTotalCost>&, vector<ClassicTotalCost>&, vector<IngredientsCost>&)
+void calculateCosts(vector<ModernRecipe>& modernRecipe, vector<ClassicRecipe>& classicRecipe, vector<ModernUnitCost>& modernUnitCost, vector<ClassicUnitCost>& classicUnitCost, vector<IngredientsCost>& ingredientsCost)
 {
 	// declare variables
-	double purchasePrice = 0;		// price for ingredient
-	double unitsPurchased = 0;		// size of item purchased (ex: 64oz)
-	char unitOfMeasure = ' ';		// ounces or milliliters
-	double unitPrice = 0;			// price per milliliter
+	double purchasePrice = 0;			// price for ingredient
+	double unitsPurchased = 0;			// size of item purchased (ex: 64oz)
+	char unitOfMeasure = ' ';			// ounces or milliliters
+	double unitPrice = 0;				// price per milliliter
 	char selection = ' ';
 	bool processMenuSelection = false;
-	int numberOfBottles = 0;
+	int numberOfBottles = 0;			// number of bottles being produced
+	double modernBottleCost = 0;		// unit cost
+	double classicBottleCost = 0;		// unit cost
+	double totalModernCost = 0;			// price for total bottles
+	double totalClassicCost = 0;		// price for total bottles
+	double profitModernWholesale = 0;	// profit when sold at wholesale price
+	double profitClassicWholesale = 0;	// profit when sold at wholesale price
+	double profitModernRetail = 0;		// profit when sold at retail price
+	double profitClassicRetail = 0;		// profit when sold at retail price
 
 	// MENU:
 	// enter ingredient prices
@@ -404,38 +407,152 @@ void calculateCosts(vector<ModernRecipe>&, vector<ClassicRecipe>&, vector<Modern
 		switch (selection)
 		{
 		case '1':
-			//// if vector is empty, add default values
-			//if (ingredientsCost.empty())
-			//{
-			//	ingredientsCost.push_back(IngredientsCost());
-			//} // if
-
-			// display menu
-			cout << "ENTER INGREDIENT PRICES." << endl;
-			cout << "What is the price of avocado oil?" << endl;
-			cin >> purchasePrice;
-			cout << "What is the quantity of units purchased (in ounces or milliliters)?" << endl;
-			cin >> unitsPurchased;
-			cout << "What unit of measurement is used? Press 1 for ounces and 2 for milliliters." << endl;
-			cin >> unitOfMeasure;
-			if (unitOfMeasure == 1)
+			// if vector is empty, add default values
+			if (ingredientsCost.empty())
 			{
-				cout << "Converting ounces to milliliters." << endl;
-				unitsPurchased *= MILLILITERS_PER_OUNCE;
+				ingredientsCost.push_back(IngredientsCost());
 			} // if
 
+			// ask for prices of ingredients
+			cout << "AVOCADO OIL PRICE" << endl;
+			ingredientsCost[0].avocado = pricePerMilliliter();
+			cout << "CASTOR OIL PRICE" << endl;
+			ingredientsCost[0].castor = pricePerMilliliter();
+			cout << "JOJOBA OIL PRICE" << endl;
+			ingredientsCost[0].jojoba = pricePerMilliliter();
+			cout << "LEMONGRASS OIL PRICE" << endl;
+			ingredientsCost[0].lemongrass = pricePerMilliliter();
+			cout << "PEPPERMINT OIL PRICE" << endl;
+			ingredientsCost[0].peppermint = pricePerMilliliter();
+			cout << "FRANKINCENSE OIL PRICE" << endl;
+			ingredientsCost[0].frankincense = pricePerMilliliter();
+			cout << "PATCHOULI OIL PRICE" << endl;
+			ingredientsCost[0].patchouli = pricePerMilliliter();
+			cout << "TEA TREE OIL PRICE" << endl;
+			ingredientsCost[0].teatree = pricePerMilliliter();
+			cout << "EUCALYPTUS OIL PRICE" << endl;
+			ingredientsCost[0].eucalyptus = pricePerMilliliter();
+			cout << "BERGAMOT OIL PRICE" << endl;
+			ingredientsCost[0].bergamot = pricePerMilliliter();
+			cout << "CEDARWOOD OIL PRICE" << endl;
+			ingredientsCost[0].cedarwood = pricePerMilliliter();
+			cout << "SANDALWOOD OIL PRICE" << endl;
+			ingredientsCost[0].sandalwood = pricePerMilliliter();
+			
+			// prices for items without volume
+			cout << "BOTTLES PRICE" << endl;
+			ingredientsCost[0].bottle = pricePerUnit();
+			cout << "LABELS PRICE" << endl;
+			ingredientsCost[0].label = pricePerUnit();
+			cout << "PRINTING PRICE" << endl;
+			ingredientsCost[0].printing = pricePerUnit();
+			cout << "BOXES PRICE" << endl;
+			ingredientsCost[0].box = pricePerUnit();
 
+			// print results
+			cout << "UNIT PRICES FOR ALL ITEMS" << endl;
+			cout << "Avocado Oil: $" << ingredientsCost[0].avocado << "/ml" << endl;
+			cout << "Castor Oil: $" << ingredientsCost[0].castor << "/ml" << endl;
+			cout << "Jojoba Oil: $" << ingredientsCost[0].jojoba << "/ml" << endl;
+			cout << "Lemongrass Oil: $" << ingredientsCost[0].lemongrass << "/ml" << endl;
+			cout << "Peppermint Oil: $" << ingredientsCost[0].peppermint << "/ml" << endl;
+			cout << "Frankincense Oil: $" << ingredientsCost[0].frankincense << "/ml" << endl;
+			cout << "Patchouli Oil: $" << ingredientsCost[0].patchouli << "/ml" << endl;
+			cout << "Tea Tree Oil: $" << ingredientsCost[0].teatree << "/ml" << endl;
+			cout << "Eucalyptus Oil: $" << ingredientsCost[0].eucalyptus << "/ml" << endl;
+			cout << "Bergamot Oil: $" << ingredientsCost[0].bergamot << "/ml" << endl;
+			cout << "Cedarwood Oil: $" << ingredientsCost[0].cedarwood << "/ml" << endl;
+			cout << "Sandalwood Oil: $" << ingredientsCost[0].sandalwood << "/ml" << endl;
+			cout << "Bottle: $" << ingredientsCost[0].bottle << " each" << endl;
+			cout << "Label: $" << ingredientsCost[0].label << " each" << endl;
+			cout << "Printing: $" << ingredientsCost[0].printing << " each" << endl;
+			cout << "Box: $" << ingredientsCost[0].box << " each" << endl;
 
 			break;
 		case '2':
-			cout << "option 2 works." << endl;
+			// if vector is empty, return to previous menu
+			if (ingredientsCost.empty())
+			{
+				cout << "Please enter ingredient costs." << endl;
+			}
+			else
+			{
+				// add ingredient costs
+				modernBottleCost = (
+					(ingredientsCost[0].avocado * AVOCADO_PER_BOTTLE) +
+					(ingredientsCost[0].castor * CASTOR_PER_BOTTLE) +
+					(ingredientsCost[0].jojoba * JOJOBA_PER_BOTTLE) +
+					(ingredientsCost[0].lemongrass * LEMONGRASS_PER_MODERN_BOTTLE) +
+					(ingredientsCost[0].eucalyptus * EUCALYPTUS_PER_MODERN_BOTTLE) +
+					(ingredientsCost[0].peppermint * PEPPERMINT_PER_MODERN_BOTTLE) +
+					(ingredientsCost[0].frankincense * FRANKINCENSE_PER_MODERN_BOTTLE) +
+					(ingredientsCost[0].sandalwood * SANDALWOOD_PER_MODERN_BOTTLE) +
+					ingredientsCost[0].bottle +
+					ingredientsCost[0].label +
+					ingredientsCost[0].printing +
+					ingredientsCost[0].box
+					);
+				classicBottleCost = (
+					(ingredientsCost[0].avocado * AVOCADO_PER_BOTTLE) +
+					(ingredientsCost[0].castor * CASTOR_PER_BOTTLE) +
+					(ingredientsCost[0].jojoba * JOJOBA_PER_BOTTLE) +
+					(ingredientsCost[0].cedarwood * CEDARWOOD_PER_CLASSIC_BOTTLE) +
+					(ingredientsCost[0].eucalyptus * EUCALYPTUS_PER_CLASSIC_BOTTLE) +
+					(ingredientsCost[0].patchouli * PATCHOULI_PER_CLASSIC_BOTTLE) +
+					(ingredientsCost[0].teatree * TEATREE_PER_CLASSIC_BOTTLE) +
+					(ingredientsCost[0].bergamot * BERGAMOT_PER_CLASSIC_BOTTLE) +
+					(ingredientsCost[0].sandalwood * SANDALWOOD_PER_CLASSIC_BOTTLE) +
+					ingredientsCost[0].bottle +
+					ingredientsCost[0].label +
+					ingredientsCost[0].printing +
+					ingredientsCost[0].box
+					);
+
+				// print unit prices
+				cout << "Price for Modern formula is " << modernBottleCost << " per bottle." << endl;
+				cout << "Price for Classic formula is " << classicBottleCost << " per bottle." << endl;
+			} // if
+			
 			break;
 		case '3':
-			cout << "option 3 works." << endl;
+			// if vector is empty, return to previous menu
+			if (ingredientsCost.empty())
+			{
+				cout << "Please enter ingredient costs." << endl;
+			}
+			else
+			{
+				// ask how many bottles are being made and calculate costs/profits
+				cout << "How many bottles are being produced?" << endl;
+				cin >> numberOfBottles;
+				// modern bottle cost
+				cout << "Modern bottle cost is $" << modernBottleCost << " per bottle." << endl;
+				// modern total cost
+				totalModernCost = (modernBottleCost * numberOfBottles);
+				cout << "Modern total cost is $" << totalModernCost << " for " << numberOfBottles << " bottles." << endl;
+				// profit modern wholesale
+				profitModernWholesale = ((numberOfBottles * WHOLESALE_BOTTLE_PRICE) - totalModernCost);
+				cout << "Modern wholesale profit is $" << profitModernWholesale << endl;
+				// profit modern retail
+				profitModernRetail = ((numberOfBottles * RETAIL_BOTTLE_PRICE) - totalModernCost);
+				cout << "Modern retail profit is $" << profitModernRetail << endl;
+				// classic bottle cost
+				cout << "Classic bottle cost is $" << classicBottleCost << " per bottle." << endl;
+				// modern total cost
+				totalClassicCost = (classicBottleCost * numberOfBottles);
+				cout << "Classic total cost is $" << totalClassicCost << " for " << numberOfBottles << " bottles." << endl;
+				// profit modern wholesale
+				profitClassicWholesale = ((numberOfBottles * WHOLESALE_BOTTLE_PRICE) - totalClassicCost);
+				cout << "Classic wholesale profit is $" << profitClassicWholesale << endl;
+				// profit modern retail
+				profitClassicRetail = ((numberOfBottles * RETAIL_BOTTLE_PRICE) - totalClassicCost);
+				cout << "Classic retail profit is $" << profitClassicRetail << endl;
+			} // if
+			
 			break;
 		case 'X':
 			processMenuSelection = false;
-			cout << "Going back.";
+			cout << "Going back." << endl;
 			break;
 		default:
 			cout << "Please make a valid selection." << endl;
@@ -444,11 +561,67 @@ void calculateCosts(vector<ModernRecipe>&, vector<ClassicRecipe>&, vector<Modern
 	} while (processMenuSelection);
 } // calculateCosts
 
+// get price per milliliter
+double pricePerMilliliter()
+{
+	// declare variables
+	double purchasePrice = 0;		// price for ingredient
+	double unitsPurchased = 0;		// size of item purchased (ex: 64oz)
+	double milliliters = 0;			// amount of milliliters purchased
+	char unitOfMeasure = ' ';		// ounces or milliliters
+	double finalPrice = 0;			// final price per milliliter
 
-// recipe calculations function
+	// prompt user to enter price, size, and unit of measurement
+	cout << "What is the total price of the ingredient?" << endl;
+	cin >> purchasePrice;
+	cout << "What is the quantity of units purchased (in ounces or milliliters)?" << endl;
+	cin >> unitsPurchased;
+	cout << "What unit of measurement is used? Press 1 for ounces and 2 for milliliters." << endl;
+	cin >> unitOfMeasure;
 
-// costs calculations function
+	// convert ounces to milliliters if needed
+	switch (unitOfMeasure)
+	{
+	case '1':
+		cout << "Converting ounces to milliliters." << endl;
+		milliliters = unitsPurchased * MILLILITERS_PER_OUNCE;
+		cout << "Milliliters purchased: " << milliliters << endl;
+		break;
+	case '2':
+		milliliters = unitsPurchased;
+		break;
+	default:
+		cout << "Please make a valid selection.";
+		break;
+	}
+	
+	// calculate final price per milliliter
+	finalPrice = (purchasePrice / milliliters);
 
-// print recipe function
+	return finalPrice;
+} // pricePerMilliliter
 
-// print costs function
+// get price per unit
+double pricePerUnit()
+{
+	// declare variables
+	double purchasePrice = 0;		// price for ingredient
+	double unitsPurchased = 0;		// number of items purchased
+	double finalPrice = 0;			// final price per unit
+
+	cout << "What is the total price of the items?" << endl;
+	cin >> purchasePrice;
+	cout << "What is the quantity of units purchased?" << endl;
+	cin >> unitsPurchased;
+	// check if item was purchased
+	if (purchasePrice == 0 || unitsPurchased == 0)
+	{
+		finalPrice = 0;
+	}
+	else
+	{
+		finalPrice = (purchasePrice / unitsPurchased);
+	} // if
+
+	return finalPrice;
+} // pricePerUnit
