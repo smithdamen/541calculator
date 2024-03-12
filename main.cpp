@@ -86,37 +86,6 @@ struct ClassicUnitCost {
 	double box;
 };
 
-//struct ModernTotalCost {
-//	double avocado;
-//	double castor;
-//	double jojoba;
-//	double lemongrass;
-//	double eucalyptus;
-//	double peppermint;
-//	double frankincense;
-//	double sandalwood;
-//	double bottle;
-//	double label;
-//	double printing;
-//	double box;
-//};
-//
-//struct ClassicTotalCost {
-//	double avocado;
-//	double castor;
-//	double jojoba;
-//	double patchouli;
-//	double teatree;
-//	double eucalyptus;
-//	double bergamot;
-//	double cedarwood;
-//	double sandalwood;
-//	double bottle;
-//	double label;
-//	double printing;
-//	double box;
-//};
-
 struct IngredientsCost {
 	double avocado;
 	double castor;
@@ -153,7 +122,6 @@ void calculateCosts(vector<ModernRecipe>&,
 double pricePerMilliliter();
 double pricePerUnit();
 
-
 // constants for ratios
 const double RETAIL_BOTTLE_PRICE = 20.00;
 const double WHOLESALE_BOTTLE_PRICE = 12.50;
@@ -185,8 +153,6 @@ int main()
 	vector<ClassicRecipe> classicRecipe;
 	vector<ModernUnitCost> modernUnitCost;
 	vector<ClassicUnitCost> classicUnitCost;
-	// vector<ModernTotalCost> modernTotalCost;
-	// vector<ClassicTotalCost> classicTotalCost;
 	vector<IngredientsCost> ingredientsCost;
 	
 	// call main menu
